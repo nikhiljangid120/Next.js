@@ -1,31 +1,32 @@
-🤖 Interview AI: Full-Stack Question GeneratorAn automated platform that generates role-specific interview questions using high-speed AI inference. This project demonstrates a production-ready full-stack architecture with secure authentication, real-time AI processing, and persistent storage.🚀 Key Features
-AI-Powered Generation: Real-time generation of interview questions tailored to specific roles and experience levels using the Groq SDK.
-Secure Authentication: Integrated with Clerk for reliable session management and identity verification.
-Persistent Storage: Automatically saves user history and generated questions to Supabase.
-Performance Focused: Optimized for low-latency responses using Groq's high-speed inference engine.
-
-🛠️ Technical Stack
-Frontend: Next.js / React
-Backend: API Routes (POST /api/generate)
-Authentication: Clerk Auth Middleware
+What it does
+This app helps people prep for interviews. You tell it the job role and your seniority level, and it spits out a list of relevant interview questions. Behind the scenes, it handles the login security, talks to an AI to get the questions, cleans up the text so it looks good, and saves everything to a database so you don't lose your history.
+Tech stack
+Framework: Next.js
+Auth: Clerk
+AI: Groq SDK
 Database: Supabase
-AI Inference: Groq LPU™ Inference Engine
-
-🔄 System Architecture & Data FlowThis application follows a strict data pipeline to ensure security, data integrity, and a clean user experience:
-Request Initiation: The user inputs their role and level. The frontend sends a JSON payload to the /api/generate endpoint.
-Auth Layer: Clerk Middleware intercepts the request. If no valid session exists, it returns a 401 Unauthorized response.
-Context Extraction: Upon successful authentication, the system extracts the userId via auth() and parses the request body to retrieve user parameters.
-AI Processing: The Groq SDK is triggered with a custom-engineered prompt. The raw output is received as a high-velocity text stream.
-Data Sanitization: To ensure a clean UI, the raw string is split by newlines and filtered to remove empty artifacts, resulting in a clean string[] array.
-Persistence: The processed questions are saved to Supabase along with the userId, role, and a timestamp for future reference.
-Final Rendering: The sanitized JSON is returned to the frontend, where setQuestions() updates the state and renders the list to the user.
-
-⚙️ Installation & Setup
-git clone <your-repo-url>Use code with caution.
-npm installUse code with caution.
-NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=...CLERK_SECRET_KEY=...GROQ_API_KEY=...SUPABASE_URL=...SUPABASE_SERVICE_ROLE_KEY=...Use code with caution.
+Styling: Tailwind CSS
+How to run it
+Clone and Install:
+bash
+git clone [your-repo-link]
+cd [project-folder]
+npm install
+Use code with caution.
+Env Setup:
+Create a .env file and add your keys for Clerk, Groq, and Supabase.
+Start:
+bash
 npm run dev
-
-
-
-
+Use code with caution.
+How it works
+Input: User fills in their role and level and hits "Generate."
+Handover: The frontend sends a POST request to /api/generate with that data.
+Security Check: Clerk middleware looks at the request. If you aren’t logged in, it kills the process with a 401 error.
+Identification: If you’re cleared, auth() grabs your unique userId.
+Parsing: The backend opens up the request body and pulls out the role and level.
+AI Call: The app sends a prompt to Groq. It uses the role/level to get a big string of questions back.
+Cleanup: That big string is messy, so the code splits it by newlines and filters out any empty gaps.
+Array Conversion: It turns that cleaned-up text into a proper list (an array of strings).
+Storage: The app saves that list to Supabase, tagged with your userId and a timestamp.
+Delivery: The final JSON list goes back to the frontend, updates the state, and shows up on your screen.
